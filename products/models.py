@@ -14,7 +14,7 @@ FLAG_TYPE=(
 
 class Products(models.Model):
     name = models.CharField(max_length=120,verbose_name=_('Name'))
-    flag = models.CharField(max_length=10,choises=FLAG_TYPE)
+    flag = models.CharField(max_length=10,choices=FLAG_TYPE)
     price = models.FloatField(verbose_name=_('price'))
     image = models.ImageField(upload_to="product",verbose_name=_('image'))
     sku = models.IntegerField(verbose_name=_('sku'))
@@ -54,7 +54,7 @@ class Review(models.Model):
     product = models.ForeignKey(Products, related_name='reviews_product', on_delete=models.CASCADE,verbose_name=_('product'))
     review = models.TextField(max_length=500,verbose_name=_('review'))
     rate = models.IntegerField(choices=[(i,i) for i in range (1,6)],verbose_name=_('rate'))
-    created_at = models.DateTimeField(defult=timezone.now,verbose_name=_('created at'))
+    created_at = models.DateTimeField(default=timezone.now,verbose_name=_('created at'))
 
 
     def __str__(self):
