@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView,DetailView
-from .models import Products , Brand , Review
+from .models import Products , Brand , Review ,ProductsImages
 # Create your views here.
 
 class ProductList(ListView):
@@ -10,9 +10,11 @@ class ProductList(ListView):
 class ProductDetails(DetailView):
     model = Products
 
-    def get_context_data(self, **kwargs) -> dict[str, Any]:
+    def get_context_data(self, **kwargs) :
         context = super().get_context_data(**kwargs)
         context["reviews"] = Review.objects.filter(product=self.get_object())
+        context["images"] = ProductsImages.objects.filter(product=self.get_object())
+
         return context
     
 
