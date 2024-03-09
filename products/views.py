@@ -14,12 +14,17 @@ class ProductDetails(DetailView):
         context = super().get_context_data(**kwargs)
         context["reviews"] = Review.objects.filter(product=self.get_object())
         context["images"] = ProductsImages.objects.filter(product=self.get_object())
-        context['related'] = Products.objects.filter(brand=self.get_object().brand)[:10]
+        context['related'] = Products.objects.filter(brand=self.get_object().brand)
 
         return context
     
 
-
  #context {'': } queryset : Product.objects.all()
  #queryset : main query : detail product  | 
  #context : extra data : review & image (extra) becouse we get new data from new table class
+
+class BrandList(ListView):
+    model = Brand
+
+class BrandDetail(DetailView):
+    model = Brand
