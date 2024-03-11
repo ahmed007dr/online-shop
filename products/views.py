@@ -7,6 +7,7 @@ from .models import Products , Brand , Review ,ProductsImages
 
 class ProductList(ListView):
     model = Products
+    paginate_by = 100 # 3lashn listView support Paginate_by
     
 
 class ProductDetails(DetailView):
@@ -27,6 +28,7 @@ class ProductDetails(DetailView):
 
 class BrandList(ListView):
     model = Brand
+    paginate_by = 20 # 3lashn listView support Paginate_by cbv
 
 # class BrandDetail(DetailView):
 #     model = Brand
@@ -39,6 +41,7 @@ class BrandList(ListView):
     #to handel pagnation from genric listview
 class BrandDetail(ListView):
     model = Products
+    paginate_by = 100 # 3lashn listView support Paginate_by cbv
     template_name = "products/brand_detail.html"
 
     def get_queryset(self):
