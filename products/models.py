@@ -66,6 +66,13 @@ class Brand(models.Model):
 
     def __str__(self):
         return self.name
+    @property
+    def total_ratings(self):
+        total = 0
+        for product in self.Products_brand.all():
+            total += product.reviews_product.count()
+        return total
+
 
 class Review(models.Model):
     user = models.ForeignKey(User,related_name='review_user', on_delete=models.SET_NULL,null=True,verbose_name=_('user'))

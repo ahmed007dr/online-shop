@@ -37,7 +37,7 @@
                 <li class="fas fa-star active"></li>
                 <li class="fas fa-star active"></li>
                 <li class="fas fa-star"></li>
-                <li class="total">(163 ratings)</li>
+                <li class="total">({{ brand.total_ratings }} ratings)</li>
             </ul>
             <p>({{brand.product_count}} items)</p>
         </div>
@@ -96,12 +96,13 @@
                                 </div>
                                 <div class="product-content">
                                     <div class="product-rating">
-                                        <i class="active icofont-star"></i>
-                                        <i class="active icofont-star"></i>
-                                        <i class="active icofont-star"></i>
-                                        <i class="active icofont-star"></i>
-                                        <i class="icofont-star"></i>
-                                        <a href="product-video.html">(3)</a>
+                                        <i class="icofont-star {% if object.avg_rate > 0 %} active {% endif %}"></i>
+                                        <i class="icofont-star {% if object.avg_rate > 1 %} active {% endif %}"></i>
+                                        <i class="icofont-star {% if object.avg_rate > 2 %} active {% endif %}"></i>
+                                        <i class="icofont-star {% if object.avg_rate > 3 %} active {% endif %}"></i>
+                                        <i class="icofont-star {% if object.avg_rate > 4 %} active {% endif %}"></i>
+                                        <a href="product-video.html">({{object.reviews_count }})</a>
+                                    </div>
                                     </div>
                                     <h6 class="product-name">
                                         <a href="product-video.html">{{object.name}}</a>
