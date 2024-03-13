@@ -3,6 +3,7 @@ from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.views.generic import ListView,DetailView
 from .models import Products , Brand , Review ,ProductsImages
+from django.db.models.aggregates import Count # create hidden column in database give me new value
 # Create your views here.
 
 class ProductList(ListView):
@@ -19,6 +20,7 @@ class ProductDetails(DetailView):
         context["images"] = ProductsImages.objects.filter(product=self.get_object())
         context['related'] = Products.objects.filter(brand=self.get_object().brand)
 
+
         return context
     
 
@@ -29,6 +31,7 @@ class ProductDetails(DetailView):
 class BrandList(ListView):
     model = Brand
     paginate_by = 20 # 3lashn listView support Paginate_by cbv
+    queryset = Brand.objects.annotate(product_count=Count('Products_brand')) #كدا انا هجيب عدد البرندات من حدول العلاقات
 
 # class BrandDetail(DetailView):
 #     model = Brand
@@ -51,5 +54,5 @@ class BrandDetail(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["brand"] = Brand.objects.get(slug=self.kwargs['slug'])
+        context["brand"] = Brand.objects.filter(slug=self.kwargs['slug']).annotate(product_count=Count('Products_brand'))[0] #كدا انا هجيب عدد البرندات من حدول العلاقات
         return context
