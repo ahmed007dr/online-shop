@@ -4,7 +4,6 @@ from django.shortcuts import render
 from django.views.generic import ListView,DetailView
 from .models import Products , Brand , Review ,ProductsImages
 from django.db.models.aggregates import Count # create hidden column in database give me new value
-# Create your views here.
 
 class ProductList(ListView):
     model = Products

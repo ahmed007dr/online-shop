@@ -54,6 +54,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
+    'context_cache.middleware.ContextCacheMiddleware',
+
 
 ]
 
@@ -144,3 +146,11 @@ INTERNAL_IPS = [  #Debug toolbar settings
     "127.0.0.1",
     # ...
 ]
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+    }
+}
