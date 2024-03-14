@@ -1,10 +1,12 @@
 from django.urls import path
-from .views import ProductDetails, ProductList, BrandDetail, BrandList  
+from .views import ProductDetails, ProductList, BrandDetail, BrandList  , add_review
 
 urlpatterns = [
     path('brands/', BrandList.as_view()),
     path('brands/<slug:slug>', BrandDetail.as_view()),
-    # Products are accessible through the brand they belong to or directly by their slug
+    
     path('', ProductList.as_view()),
     path('<slug:slug>', ProductDetails.as_view()),
+
+    path('<slug:slug>/add-review', add_review),
 ]
