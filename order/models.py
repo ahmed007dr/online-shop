@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from utils.generate_code import generate_code
 import datetime
 from django.utils import timezone
-from products.models import Product  # Assuming the model is named Product, not Products
+from products.models import Products  # Assuming the model is named Product, not Products
 from accounts.models import Address
 
 ORDER_STATUS = (
@@ -26,7 +26,7 @@ class Order(models.Model):
 
 class OrderDetail(models.Model):
     order = models.ForeignKey(Order, related_name="order_details", on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, related_name='orderdetails_product', on_delete=models.SET_NULL, null=True, blank=True)  # Assuming Product model
+    product = models.ForeignKey(Products, related_name='orderdetails_product', on_delete=models.SET_NULL, null=True, blank=True)  # Assuming Product model
     quantity = models.IntegerField()
     price = models.FloatField()
     total = models.FloatField()
