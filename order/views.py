@@ -1,5 +1,6 @@
-from django.shortcuts import render
-from .models import Order
+from django.shortcuts import render,redirect
+from .models import Order ,Cart ,CartDetail
+from products.models import Products
 
 def order_list(request):
     data = Order.objects.filter(user=request.user)
@@ -7,5 +8,3 @@ def order_list(request):
 
 def checkout(request):
     return render(request, 'order/checkout.html', {})
-
-
