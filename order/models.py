@@ -43,7 +43,7 @@ class Cart(models.Model):
     total_with_coupon = models.FloatField(null=True, blank=True)
 
 class CartDetail(models.Model):
-    cart = models.ForeignKey(Order, related_name="cart_details", on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, related_name="cart_details", on_delete=models.CASCADE)
     product = models.ForeignKey(Products, related_name='cartdetails_product', on_delete=models.SET_NULL, null=True, blank=True)  # Assuming Product model
     quantity = models.IntegerField(default=1)
     total = models.FloatField(null=True,blank=True) 
