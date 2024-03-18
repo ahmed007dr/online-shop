@@ -42,6 +42,14 @@ class Cart(models.Model):
     coupon = models.ForeignKey('Coupon', related_name='cart_coupon', null=True, blank=True, on_delete=models.SET_NULL)  # Added related_name
     total_with_coupon = models.FloatField(null=True, blank=True)
 
+    @property
+    def cart_total(self):
+        total = 0
+        for item in self.cart_details.all():
+            total += item.total
+        return round(total,2)
+
+
 class CartDetail(models.Model):
     cart = models.ForeignKey(Cart, related_name="cart_details", on_delete=models.CASCADE)
     product = models.ForeignKey(Products, related_name='cartdetails_product', on_delete=models.SET_NULL, null=True, blank=True)  # Assuming Product model
