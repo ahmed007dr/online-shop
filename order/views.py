@@ -7,3 +7,5 @@ def order_list(request):
 
 def checkout(request):
     return render(request, 'order/checkout.html', {})
+
+
