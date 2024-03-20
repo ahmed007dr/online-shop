@@ -58,6 +58,7 @@ class CartDetail(models.Model):
             if item.total is not None:
                 total += item.total
         return round(total, 2)
+
     
 class Coupon(models.Model):
     code = models.CharField(max_length=20)  
