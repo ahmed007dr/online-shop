@@ -1,15 +1,24 @@
 from django.core.cache import cache
 from .models import Settings
 
+
+
+
 def get_settings(request):
-    try:
-        settings_data = cache.get('settings_data')
-
-    except Exception:
-        settings_data = Settings.objects.last()
-        cache.set('settings_data', settings_data, 60 * 60 * 24)
-
+    settings_data = cache.get('settings_data')
+    settings_data = Settings.objects.last()
     return {'settings_data': settings_data}
+
+
+# def get_settings(request):
+#     try:
+#         settings_data = cache.get('settings_data')
+
+#     except Exception:
+#         settings_data = Settings.objects.last()
+#         #cache.set('settings_data', settings_data, 60 * 60 * 24)
+
+#     return {'settings_data': settings_data}
 
 '''
 - retrieve the settings data from the cache using the key 'settings_data'
