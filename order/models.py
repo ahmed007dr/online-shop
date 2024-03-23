@@ -29,7 +29,7 @@ class OrderDetail(models.Model):
     product = models.ForeignKey(Products, related_name='orderdetails_product', on_delete=models.SET_NULL, null=True, blank=True)  # Assuming Product model
     quantity = models.IntegerField()
     price = models.FloatField()
-    total = models.FloatField()
+    total = models.FloatField(null=True, blank=True)
 
 CART_STATUS = (
     ('Inprogress', 'Inprogress'),
@@ -43,6 +43,15 @@ class Cart(models.Model):
     total_with_coupon = models.FloatField(null=True, blank=True)
 
 
+    @property
+    def cart_total(self):
+        total = 0.0
+        for item in self.cart_details.all():
+            if item.total is not None:  # Check if item.total is not None
+                total += item.total
+        return round(total, 2)
+
+    
 
 class CartDetail(models.Model):
     cart = models.ForeignKey(Cart, related_name="cart_details", on_delete=models.CASCADE)
@@ -51,15 +60,6 @@ class CartDetail(models.Model):
     total = models.FloatField(null=True,blank=True) 
 
 
-    @property
-    def cart_total(self):
-        total = 0.0
-        for item in self.cart_detail.all():
-            if item.total is not None:
-                total += item.total
-        return round(total, 2)
-
-    
 class Coupon(models.Model):
     code = models.CharField(max_length=20)  
     start_date = models.DateField(default=timezone.now)  

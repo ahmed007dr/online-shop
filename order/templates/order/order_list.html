@@ -69,11 +69,11 @@
                                                         <i class="icofont-{% if order.status == 'Processed' or order.status == 'Shipped' or order.status == 'Delivered' %}check{% else %}close{% endif %}"></i>
                                                         <span>order processed</span>
                                                     </li>
-                                                    <li class="order-track-item{% if order.status == 'Shipped' or order.status == 'Delivered' %} active {% endif %}">
+                                                    <li class="order-track-item {% if order.status == 'Shipped' or order.status == 'Delivered' %} active {% endif %}">
                                                         <i class="icofont-{% if order.status == 'Shipped' or order.status == 'Delivered' %}check{% else %}close{% endif %}"></i>
                                                         <span>order shipped</span>
                                                     </li>
-                                                    <li class="order-track-item{% if order.status == 'Delivered' %} active {% endif %}">
+                                                    <li class="order-track-item {% if order.status == 'Delivered' %} active {% endif %}">
                                                         <i class="icofont-{% if order.status == 'Delivered' %}check{% else %}close{% endif %}"></i>
                                                         <span>order delivered</span>
                                                     </li>
@@ -88,7 +88,7 @@
                                                 </li>
                                                 <li>
                                                     <h6>Total Item</h6>
-                                                    <p>6 Items</p>
+                                                    <p>({{orders|length}}) Items</p>
                                                 </li>
                                                 <li>
                                                     <h6>Order Time</h6>

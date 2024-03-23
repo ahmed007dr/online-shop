@@ -366,24 +366,24 @@
             </div>
             <ul class="cart-list">
                 {% for item in cart_detail_data %}
-                <li class="cart-item">
-                    <div class="cart-media">
-                        <a href="products/{{ item.product.slug }}"><img src="{{ item.product.image.url }}" alt="product"></a>
-                        <button class="cart-delete"><i class="far fa-trash-alt"></i></button>
-                    </div>
-                    <div class="cart-info-group">
-                        <div class="cart-info">
-                            <h6><a href="products/{{ item.product.slug }}">{{ item.product.name }}</a></h6>
-                            <p>Unit Price - ${{ item.product.price }}</p>
+                    <li class="cart-item">
+                        <div class="cart-media">
+                            <a href="products/{{ item.product.slug }}"><img src="{{ item.product.image.url }}" alt="product"></a>
+                            <button class="cart-delete"><i class="far fa-trash-alt"></i></button>
                         </div>
-                        <div class="cart-action-group">
-                            <div class="product-action">
-                                <input class="action-input" title="Quantity Number" type="text" name="quantity" value="{{ item.quantity }}">
+                        <div class="cart-info-group">
+                            <div class="cart-info">
+                                <h6><a href="products/{{ item.product.slug }}">{{ item.product.name }}</a></h6>
+                                <p>Unit Price - ${{ item.product.price }}</p>
                             </div>
-                            <h6>${{ item.total }}</h6>  <!-- If you want to use 'total' field directly -->
+                            <div class="cart-action-group">
+                                <div class="product-action">
+                                    <input class="action-input" title="Quantity Number" type="text" name="quantity" value="{{ item.quantity }}">
+                                </div>
+                                <h6>${{ item.total }}</h6>  
+                            </div>
                         </div>
-                    </div>
-                </li> 
+                    </li> 
                 {% endfor %}
             
             </ul>

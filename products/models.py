@@ -37,6 +37,7 @@ class Products(models.Model):
     def reviews_count(self): #name of function (get_)+ name of column # self couz in class #object product activae
         reviews = self.reviews_product.all().count() # related name from class review
         return reviews
+    
     @property 
     def avg_rate(self):
         total=0 #sum rate: object (one product)
@@ -67,6 +68,7 @@ class Brand(models.Model):
 
     def __str__(self):
         return self.name
+    
     @property
     def total_ratings(self):
         total = 0
