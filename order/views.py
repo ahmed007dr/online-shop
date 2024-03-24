@@ -25,7 +25,7 @@ def checkout(request):
                 sub_total = cart.cart_total - coupon_value
                 total = sub_total + delivery_fee
                 cart.coupon = coupon
-                cart.total_with_coupon = sub_total
+                cart.total_with_coupon = round(sub_total,2)
                 cart.save()
                 return render(request, 'order/checkout.html', {
                 'cart_detail': cart_detail, 
