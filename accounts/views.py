@@ -1,10 +1,60 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 
-# Create your views here.
+from .form import SignupForm, UserActivateForm
+from .models import Profile
+from django.core.mail import send_mail
 
+def signup(request):#for make signup
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
 
-def signup(request):
-    pass
+            user = form.save(commit=False)
+            user.is_active = False
 
-def user_activate(request):
+            form.save()
+            profile = Profile.object.get(user__username=username)
+            #send_email
+            send_mail(
+                "acctivate ur email",
+                "welcome {username} \n user this code{profile.code} to activate ur account.",
+                "ahmed007eg@gmail.com",
+                [email],
+                fail_silently=False,
+            )
+            return redirect(f'/accounts/{username}/activate')
+
+    else:
+        form = SignupForm()
+    return render(request, 'accounts/signup.html', {'form': form})
+
+def user_activate(request,username):
+    '''
+    -code ---> activate
+    -redirect ---> log in
+    '''
+    profile=Profile.objects.get(user__username=username)
+
+    if request.method == 'POST':
+        form = UserActivateForm(request.POST)
+        if form.is_valid():
+            code = form.cleaned_data['code']
+            if code == profile.code :
+                profile.code = ''
+
+                user = User.objects.get(username=username)
+                user.is_active=True
+
+                user.save()
+                profile.save()
+                
+                return redirect('/accounts/login')
+    else:
+        form = UserActivateForm()
+    return render(request, 'accounts/activate.html', {'form': form})
+
+def dashbord(request):
     pass
