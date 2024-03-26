@@ -4,8 +4,7 @@ from django.contrib.auth.models import User
 from .form import SignupForm, UserActivateForm
 from .models import Profile
 from django.core.mail import send_mail
-
-def signup(request):#for make signup
+def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
@@ -16,20 +15,22 @@ def signup(request):#for make signup
             user.is_active = False
 
             form.save()
-            profile = Profile.object.get(user__username=username)
+            profile = Profile.objects.get(user__username=username) 
+
             #send_email
             send_mail(
-                "acctivate ur email",
-                "welcome {username} \n user this code{profile.code} to activate ur account.",
+                "activate your email",
+                f"Welcome {username}!\nUse this code {profile.code} to activate your account.",
                 "ahmed007eg@gmail.com",
                 [email],
                 fail_silently=False,
             )
-            return redirect(f'/accounts/{username}/activate')
+            return redirect(f'/accounts/{username}/activate/')
 
     else:
         form = SignupForm()
     return render(request, 'accounts/signup.html', {'form': form})
+
 
 def user_activate(request,username):
     '''
