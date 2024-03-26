@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,7 +46,6 @@ INSTALLED_APPS = [
     'products',
     'settings',
     'order',
-    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -164,3 +164,4 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 AUTHENTICATION_BACKENDS  = [
     'accounts.backend.EmailUsernameLogin'
 ]
+LOGIN_REDIRECT_URL = '/'
