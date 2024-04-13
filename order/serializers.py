@@ -10,6 +10,7 @@ class CartDetailSerializers(serializers.ModelSerializer):
 
 
 class CartSerializers(serializers.ModelSerializer):
+    cart_details=CartDetailSerializers(many=True) #link with cart
     class Meta:
         model = Cart
         fields = '__all__'
@@ -22,6 +23,7 @@ class OrderDetailSerializers(serializers.ModelSerializer):
 
 
 class OrderSerializers(serializers.ModelSerializer):
+    order_details = OrderDetailSerializers(many=True) # link with order
     class Meta:
         model = Order
         fields = '__all__'
