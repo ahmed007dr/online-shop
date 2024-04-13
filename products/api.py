@@ -1,9 +1,10 @@
 from rest_framework import generics
-from .models import Products , Brand ,Review , ProductsImages
+from .models import Products, Brand, Review, ProductsImages
 from . import serializers
-from pagination import MyPagination
+from rest_framework.pagination import PageNumberPagination
 
-
+class MyPagination(PageNumberPagination):
+    page_size = 10
 
 class ProductListAPI(generics.ListAPIView):
     queryset = Products.objects.all()
@@ -13,11 +14,9 @@ class ProductDetailAPI(generics.RetrieveAPIView):
     queryset = Products.objects.all()
     serializer_class = serializers.ProductDetailsSerializer
 
-
 class BrandListAPI(generics.ListAPIView):
     queryset = Brand.objects.all()
     serializer_class = serializers.BrandListSerializer
-    
     pagination_class = MyPagination
 
 class BrandDetailAPI(generics.RetrieveAPIView):
