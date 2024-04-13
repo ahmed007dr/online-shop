@@ -61,12 +61,12 @@ class ApplyCouponAPI(GenericAPIView):
                 return responses({'invald':' invald coupon'},status=status.HTTP_405_METHOD_NOT_ALLOWED)
         return responses ({'messge':'not found'},status=status.HTTP_404_NOT_FOUND)
 
-class CreateOrder(GenericAPIView):
+class CreateOrderAPI(GenericAPIView):
     def post(self,request,*args,**kwargs):
 
         user = User.objects.get(username=self.kwargs['username'])# from URL 
-        code = request.data['payment_code']
-        address = request.data['address_id']
+        code = request.data['payment_code'] #request body faayas
+        address = request.data['address_id'] #request body fayas
 
         cart = Cart.objects.get(user=request.user,status='Inprogress')
         cart_detail = CartDetail.objects.filter(cart=cart) #loop 86 line
@@ -107,4 +107,34 @@ class CreateOrder(GenericAPIView):
     
 
 class CartCreateUpdateDelete(GenericAPIView):
-    pass
+    def get (self,request,*args,**kwargs): #get or create #method get
+        user = User.objects.get(username=self.kwargs['username'])# from URL 
+        cart, created = Cart.objects.get_or_create(user=user, status='Inprogress')
+        data = CartSerializers(cart).data
+        return responses({'Cart':data})  
+        # we should get detail cart not cart ( in serilazer we make reflict to get one from all and all from one )
+
+    def post(self,request,*args,**kwargs): #add update #method post
+        user = User.objects.get(username=self.kwargs['username'])# from URL 
+        #copy from views
+        product =Products.objects.get(id=request.POST['product_id'])
+        quantity = int(request.POST['quantity'])
+
+        cart = Cart.objects.get(user=request.user, status='Inprogress')
+        cart_details, created = CartDetail.objects.get_or_create(cart=cart, product=product)
+
+        cart_details.quantity = quantity
+        cart_details.total = round(product.price * cart_details.quantity,2)
+        cart_details.save()
+        return responses({'message':'item was updated'},status=status.HTTP_201_CREATED)  
+
+
+    def delete(self,request,*args,**kwargs): # delete from cart #method delete
+        user = User.objects.get(username=self.kwargs['username'])# from URL 
+        #cart, created = Cart.objects.get(user=user, status='Inprogress')
+        product = CartDetail.objects.get(id=request.data['item_id']) #request body fayas
+        product.delete()
+        return responses ({'message':'item was deleted successfully'},status=status.HTTP_202_ACCEPTED) 
+    
+
+
