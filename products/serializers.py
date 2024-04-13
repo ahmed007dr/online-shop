@@ -17,9 +17,16 @@ class ProductListSerializer(serializers.ModelSerializer):
 class ProductDetailsSerializer(serializers.ModelSerializer):
     brand = serializers.StringRelatedField()
 
+    review_count = serializers.SerializerMethodField(method_name='get_review_count') # anther way
+
     class Meta:
         model = Products
         fields = '__all__'
+
+
+    def get_review_count(self,object):
+        reviews = object.reviews_product.all().count() #  (العلاقهreviews_product)كدا هنرجع بكل التقيمات و عددهم للمنتج الواحد
+        return reviews
 
 class BrandListSerializer(serializers.ModelSerializer):
     class Meta:
