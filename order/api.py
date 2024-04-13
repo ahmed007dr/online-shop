@@ -8,6 +8,8 @@ from .models import Order , OrderDetail , Cart , CartDetail , Coupon
 from products.models import Products # from anther app
 from settings.models import DeliveryFee # from anther app
 import datetime
+from accounts.models import Address
+from rest_framework import status
 
 class OrderListAPI(ListAPIView):
     serializer_class = OrderSerializers
@@ -54,9 +56,55 @@ class ApplyCouponAPI(GenericAPIView):
                 cart.coupon = coupon
                 cart.total_with_coupon = round(sub_total,2)
                 cart.save()
-                return responses({'messge':' coupon was applied successfuly'})
+                return responses({'messge':' coupon was applied successfuly'},status=status.HTTP_202_ACCEPTED)
             else:
-                return responses({'invald':' invald coupon'})
-        return responses ({'messge':'not found'})
+                return responses({'invald':' invald coupon'},status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return responses ({'messge':'not found'},status=status.HTTP_404_NOT_FOUND)
 
+class CreateOrder(GenericAPIView):
+    def post(self,request,*args,**kwargs):
 
+        user = User.objects.get(username=self.kwargs['username'])# from URL 
+        code = request.data['payment_code']
+        address = request.data['address_id']
+
+        cart = Cart.objects.get(user=request.user,status='Inprogress')
+        cart_detail = CartDetail.objects.filter(cart=cart) #loop 86 line
+        user_address = Address.objects.get(id=address)
+
+        #cart : order | cart detail : order_Detail# create new cart
+        new_order = Order.objects.create(
+            user=user,
+            status = 'Received',
+            code = code, 
+            address = user_address ,
+            coupon = cart.coupon,
+            total_with_coupon = cart.total_with_coupon,
+            total = cart.cart_total
+        )
+        
+        #order detail
+        for item in cart_detail:
+            prodcut =Products.objects.get(id=item.product.id)
+            OrderDetail.objects.create(
+                order = new_order,
+                product = prodcut,
+                quantity = item.quantity,
+                price = prodcut.price ,
+                total = round(item.quantity * prodcut.price,2)
+            )
+
+        # decrese product quntiy
+            prodcut.quantity -= item.quantity
+            prodcut.save()
+
+        # empty the cart after order complete
+        cart.status = 'Completed'
+        cart.save()            
+        #send email>>>>>>>>>>>>>> doc
+
+        return responses({'messge':'order was created successfully'},status=status.HTTP_201_CREATED)    
+    
+
+class CartCreateUpdateDelete(GenericAPIView):
+    pass
