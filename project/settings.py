@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     "taggit",
     "debug_toolbar",
+    'rest_framework',
 
 
     'products',
