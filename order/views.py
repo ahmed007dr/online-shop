@@ -47,17 +47,23 @@ def checkout(request):
         "discound": discound,
         'total': total
     })
+from django.http import HttpResponseBadRequest
+from django.contrib.auth.decorators import login_required
 
-
-
+@login_required
 def add_to_cart(request):
-    product =Products.objects.get(id=request.POST['product_id'])
-    quantity = int(request.POST['quantity'])
+    try:
+        product_id = int(request.POST.get('product_id'))
+        quantity = int(request.POST.get('quantity'))
+    except (KeyError, ValueError):
+        return HttpResponseBadRequest("Invalid request parameters")
+
+    product = get_object_or_404(Products, id=product_id)
     cart = Cart.objects.get(user=request.user, status='Inprogress')
     cart_details, created = CartDetail.objects.get_or_create(cart=cart, product=product)
 
     cart_details.quantity = quantity
-    cart_details.total = round(product.price * cart_details.quantity,2)
+    cart_details.total = round(product.price * cart_details.quantity, 2)
     cart_details.save()
 
     return redirect(f'/products/{product.slug}')
