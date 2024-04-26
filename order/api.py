@@ -77,7 +77,7 @@ class CreateOrderAPI(GenericAPIView):
             user=user,
             status = 'Received',
             code = code, 
-            address = user_address ,
+            delivery_address = user_address ,
             coupon = cart.coupon,
             total_with_coupon = cart.total_with_coupon,
             total = cart.cart_total
