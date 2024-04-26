@@ -46,11 +46,19 @@ INSTALLED_APPS = [
     'drf_yasg',
     "django_bootstrap5",
     'rest_framework.authtoken',
+    'dj_rest_auth',
+    
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
 
     'products',
     'settings',
     'order',
 ]
+SITE_ID = 1
 
 #Rest API
 REST_FRAMEWORK = {
@@ -59,7 +67,9 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
-    ]
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',]
                 }
 
 
@@ -73,8 +83,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     'context_cache.middleware.ContextCacheMiddleware',
-
-
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
