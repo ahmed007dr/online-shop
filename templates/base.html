@@ -12,8 +12,8 @@
 
         <!-- AUTHOR META -->
         <meta name="author" content="embabi">
-        <meta name="email" content="ahmed007eg@gmail.com">
-        <meta name="profile" content="https://www.facebook.com/ahmed007eg/">
+        <meta name="email" content="{{settings_data.emails}}">
+        <meta name="profile" content="{{settings_data.facebook}}">
 
         <!-- TEMPLATE META -->
         <meta name="name" content="embabi">
@@ -24,7 +24,7 @@
         =======================================-->
 
         <!-- WEBPAGE TITLE -->
-        <title>Index Home - EMBABI</title>
+        <title>Index Home - {{settings_data.name}}</title>
 
         <!--=====================================
                     CSS LINK PART START
@@ -684,7 +684,7 @@
                     <div class="col-md-5 col-lg-6 col-xl-7">
                         <div class="news-text">
                             <h2>Get 20% Discount for call us DR.AHMED EMBABI </h2>
-                            <p>Develpor and system 01012105785</p>
+                            <p>Develpor and system {{settings_data.call_us}}</p>
                         </div>
                     </div>
                     <div class="col-md-7 col-lg-6 col-xl-5">

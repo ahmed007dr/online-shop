@@ -4,7 +4,10 @@ from django.contrib.auth.models import User
 from .form import SignupForm, UserActivateForm
 from .models import Profile
 from django.core.mail import send_mail
+
 def signup(request):
+    # if request.user.is_authenticated:
+    #     return redirect('/')
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
