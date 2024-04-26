@@ -1,6 +1,7 @@
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Products, Brand, Review, ProductsImages
 from . import serializers
@@ -16,6 +17,7 @@ class ProductListAPI(generics.ListAPIView):
     filterset_fields = ['flag', 'brand']
     search_fields = ['name', 'description','subtitle']
     ordering_fields = ['price']
+    permission_classes = [IsAuthenticated] # any one can log in should give me token  to access the api's
 
 
 
