@@ -9,7 +9,12 @@ class ProductList(ListView):
     model = Products
     paginate_by = 20 # 3lashn listView support Paginate_by
     
-
+    def get_queryset(self):
+        queryset=super().get_queryset()
+        queryset=queryset.filter(quantity__gt=0)# filter products that have quantity more than
+        return super().get_queryset()
+    
+    
 class ProductDetails(DetailView):
     model = Products
 
