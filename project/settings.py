@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-!0lrb@!xogu36)79b^8vu=(r)41%&-gce*l4em%@epm#st=c5u
 DEBUG = True
 
 #ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['44.226.145.213', 'online-shop-embabi.onrender.com', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'online-shop-embabi.onrender.com']
 
 
 
