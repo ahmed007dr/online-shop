@@ -25,8 +25,8 @@ SECRET_KEY = 'django-insecure-!0lrb@!xogu36)79b^8vu=(r)41%&-gce*l4em%@epm#st=c5u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', 'online-shop-embabi.onrender.com']
+ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'online-shop-embabi.onrender.com']
 
 
 
@@ -161,7 +161,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
-#add   path for url static & media
+# #add   path for url static & media
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage" #render deploy
 
 MEDIA_URL='media/'
 MEDIA_ROOT=BASE_DIR / "media"

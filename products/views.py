@@ -4,6 +4,8 @@ from django.shortcuts import render ,redirect
 from django.views.generic import ListView,DetailView
 from .models import Products , Brand , Review ,ProductsImages
 from django.db.models.aggregates import Count # create hidden column in database give me new value
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 
 class ProductList(ListView):
     model = Products
@@ -62,17 +64,23 @@ class BrandDetail(ListView):
         return context
 
 
-def add_review(request,slug):
-    product=Products.objects.get(slug=slug)
-    review=request.POST['review'] #request.POST.get(review) # request.GET['review] # request.GET.get['review]
-    rate=request.POST['rating']
-#add review
+@login_required
+def add_review(request, slug):
+    product = Products.objects.get(slug=slug)
+    review = request.POST.get('review')
+    rate = request.POST.get('rating')
+    if not (review and rate):
+        # Handle case where review or rating is missing
+        return HttpResponseForbidden("Review and rating are required.")
+
+    # Add review
     Review.objects.create(
         user=request.user,
         product=product,
         review=review,
         rate=rate
     )
-    #get all reviews for this products
-    review =Review.objects.filter(product=product)
+
+    # Get all reviews for this product
+    reviews = Review.objects.filter(product=product)
     return redirect(f'/products/{slug}')
