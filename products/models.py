@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 # Create your models here.
+from autoslug import AutoSlugField
 
 FLAG_TYPE=(
     ('New','New'),
@@ -17,14 +18,14 @@ class Products(models.Model):
     flag = models.CharField(max_length=10,choices=FLAG_TYPE)
     price = models.FloatField(verbose_name=_('price'))
     image = models.ImageField(upload_to="product",verbose_name=_('image'))
-    sku = models.IntegerField(verbose_name=_('sku'))
+    sku = models.IntegerField(verbose_name=_('sku'),blank=True,null=True)
     subtitle = models.TextField(max_length=500,verbose_name=_('subtitle'))
     description = models.TextField(max_length=3000,verbose_name=_('description')) 
     tags = TaggableManager()
     brand = models.ForeignKey("Brand",related_name="Products_brand",on_delete=models.SET_NULL,null=True,verbose_name=_('brand'))
     quantity = models.IntegerField(_('quantity'), default=2)
 
-    slug = models.SlugField(blank=True,null=True,unique=True)
+    slug = AutoSlugField,models.SlugField(blank=True,null=True,unique=True)
     def save(self, *args, **kwargs):
        self.slug = slugify(self.name)
        super(Products, self).save(*args, **kwargs) # Call the real save() method
