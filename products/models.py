@@ -25,10 +25,12 @@ class Products(models.Model):
     brand = models.ForeignKey("Brand",related_name="Products_brand",on_delete=models.SET_NULL,null=True,verbose_name=_('brand'))
     quantity = models.IntegerField(_('quantity'), default=2)
 
-    slug = AutoSlugField,models.SlugField(blank=True,null=True,unique=True)
+    slug = AutoSlugField(populate_from='name', unique=True, blank=True, null=True, verbose_name=_('slug'))  # Make the slug field nullable and blank initially
+
     def save(self, *args, **kwargs):
-       self.slug = slugify(self.name)
-       super(Products, self).save(*args, **kwargs) # Call the real save() method
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super(Products, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
