@@ -1,52 +1,86 @@
+
 import os ,django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
 django.setup()
 
-
+import pandas as pd
+from faker import Faker
+import random
+from products.models import Products, Brand, Review
+import pandas as pd
 from faker import Faker
 import random
 from products.models import Products, Brand, Review
 
-def seed_brand(n):
+def seed_brand_from_excel(df):
+    brands = df['brand'].unique()
+    for brand_name in brands:
+        Brand.objects.get_or_create(name=brand_name, defaults={
+            'image': f'brand/{random.choice([f"{str(i).zfill(2)}.jpg" for i in range(1, 17)])}'
+        })
+
+def seed_products_from_excel(df):
     faker = Faker()
-    image = ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.jpg', '06.jpg', '07.jpg', '08.jpg', '09.jpg', '10.jpg']
+    for index, row in df.iterrows():
+        product_name = row['product']
+        quantity = row['quantity']
+        price = row['price']
+        brand_name = row['brand']
 
-    for x in range(n):
-        Brand.objects.create(
-            name=faker.name(),
-            image=f'brand/{image[random.randint(0, 9)]}'
+        # Get or create the brand
+        brand, _ = Brand.objects.get_or_create(name=brand_name)
+        
+        # Generate random values for sku, subtitle, and description
+        sku = random.randint(1000, 9999)
+        subtitle = faker.text(max_nb_chars=120)
+        description = faker.text(max_nb_chars=500)
+        image = f'product/{random.choice([f"{str(i).zfill(2)}.jpg" for i in range(1, 11)])}'
+        flag = random.choice(['New', 'Sale', 'Feature'])
+
+        product, created = Products.objects.update_or_create(
+            name=product_name,
+            defaults={
+                'flag': flag,
+                'price': price,
+                'sku': sku,
+                'subtitle': subtitle,
+                'description': description,
+                'brand': brand,
+                'image': image
+            }
         )
+        if created:
+            print(f'Created new product: {product_name}')
+        else:
+            print(f'Updated product: {product_name}')
 
-def seed_products(n):
-    faker = Faker()
-    flag_types = ['New', 'Sale', 'Feature']
-    brands = Brand.objects.all()
-    image = ['01.jpg', '02.jpg', '03.jpg', '04.jpg', '05.jpg', '06.jpg', '07.jpg', '08.jpg', '09.jpg', '10.jpg']
+# def seed_reviews(product, n):
+#     faker = Faker()
+#     for x in range(n):
+#         Review.objects.create(
+#             product=product,
+#             rating=random.randint(1, 5),
+#             comment=faker.text(max_nb_chars=200)
+#         )
 
-    for x in range(n):
-        product = Products.objects.create(
-            name=faker.name(),
-            flag=flag_types[random.randint(0, 2)],
-            price=round(random.uniform(20.99, 99.99), 2),
-            sku=random.randint(1000, 9999),
-            subtitle=faker.text(max_nb_chars=120),
-            description=faker.text(max_nb_chars=500),
-            brand=brands[random.randint(0, len(brands) - 1)],
-            image=f'product/{image[random.randint(0, 9)]}'
-        )
-        #seed_reviews(product, random.randint(1, 5))  # Adjust the number of reviews per product as needed
+def update_products_from_excel(file_path):
+    try:
+        df = pd.read_excel(file_path)
+        seed_brand_from_excel(df)
+        seed_products_from_excel(df)
+        print('Successfully updated products from Excel file')
+    except pd.errors.EmptyDataError:
+        print('The provided Excel file is empty.')
+    except FileNotFoundError:
+        print('The provided file does not exist.')
+    except Exception as e:
+        print(f'Error updating products: {str(e)}')
 
-def seed_reviews(product, n):
-    faker = Faker()
+if __name__ == '__main__':
+    import argparse
 
-    for x in range(n):
-        Review.objects.create(
-            product=product,
-            rating=random.randint(1, 5),
-            comment=faker.text(max_nb_chars=200)
-        )
+    parser = argparse.ArgumentParser(description='Update products from an Excel file')
+    parser.add_argument('file_path', type=str, nargs='?', default='C:/Users/HPz/Desktop/pharma.xls', help='The path to the Excel file')
+    args = parser.parse_args()
 
-#seed_brand(300)
-
-# Uncomment the line below to seed products and associated reviews
-seed_products(1000)
+    update_products_from_excel(args.file_path)
