@@ -158,3 +158,28 @@ CACHES = {
         "LOCATION": "redis://127.0.0.1:6379",
     }
 }
+
+#logging
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,  # logging system in Django (FALSE means it won't disable existing loggers)
+    'handlers': {
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'mylogs.log',
+            'level': 'DEBUG',
+            'formatter': 'basic',  # Add this line to link the formatter
+        }
+    },
+    'loggers': {
+        '': {
+            'level': 'DEBUG',  
+            'handlers': ['file']
+        }
+    },
+    'formatters': {
+        'basic': {
+            'format': '%(asctime)s %(levelname)s %(message)s'
+        }
+    }
+}
