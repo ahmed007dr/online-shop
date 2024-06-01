@@ -62,9 +62,6 @@ class BrandDetail(ListView):
 logger = logging.getLogger(__name__) # name = myapp(products) . views
 # create handler
 
-
-
-
 def add_review(request,slug):
     try:
         product=Products.objects.get(slug=slug)

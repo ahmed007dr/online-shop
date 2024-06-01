@@ -169,12 +169,17 @@ LOGGING = {
             'filename': 'mylogs.log',
             'level': 'DEBUG',
             'formatter': 'basic',  # Add this line to link the formatter
+        },
+        'console': {
+            'class': 'logging.StreamHandler',  # Use StreamHandler for console output
+            'level': 'DEBUG',
+            'formatter': 'basic',  # Add this line to link the formatter
         }
     },
     'loggers': {
         '': {
-            'level': 'DEBUG',  
-            'handlers': ['file']
+            'level': 'DEBUG',
+            'handlers': ['file', 'console']
         }
     },
     'formatters': {
