@@ -183,7 +183,8 @@ LOGGING = {
         },
         'products.views': {
             'level': 'DEBUG',
-            'handlers': ['console']
+            'handlers': ['console'],
+            'propagate':False,
         }
 
     },
