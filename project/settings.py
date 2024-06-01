@@ -177,7 +177,7 @@ LOGGING = {
         }
     },
     'loggers': {
-        '': {
+        'products.views': {
             'level': 'DEBUG',
             'handlers': ['file', 'console']
         }
