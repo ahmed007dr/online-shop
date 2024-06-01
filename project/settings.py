@@ -177,10 +177,15 @@ LOGGING = {
         }
     },
     'loggers': {
+        'products': {
+            'level': 'DEBUG',
+            'handlers': ['file']
+        },
         'products.views': {
             'level': 'DEBUG',
-            'handlers': ['file', 'console']
+            'handlers': ['console']
         }
+
     },
     'formatters': {
         'basic': {
