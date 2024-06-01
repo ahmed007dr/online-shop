@@ -4,7 +4,7 @@ from django.shortcuts import render ,redirect
 from django.views.generic import ListView,DetailView
 from .models import Products , Brand , Review ,ProductsImages
 from django.db.models.aggregates import Count # create hidden column in database give me new value
-
+import logging
 class ProductList(ListView):
     model = Products
     paginate_by = 20 # 3lashn listView support Paginate_by
@@ -57,17 +57,31 @@ class BrandDetail(ListView):
         return context
 
 
+
+# create logger
+logger = logging.getLogger(__name__) # name = myapp(products) . views
+# create handler
+
+
+
+
 def add_review(request,slug):
-    product=Products.objects.get(slug=slug)
-    review=request.POST['review'] #request.POST.get(review) # request.GET['review] # request.GET.get['review]
-    rate=request.POST['rating']
-#add review
-    Review.objects.create(
-        user=request.user,
-        product=product,
-        review=review,
-        rate=rate
-    )
-    #get all reviews for this products
-    review =Review.objects.filter(product=product)
-    return redirect(f'/products/{slug}')
+    try:
+        product=Products.objects.get(slug=slug)
+        logger.info('getting all reviw')
+        review=request.POST['review'] #request.POST.get(review) # request.GET['review] # request.GET.get['review]
+        rate=request.POST['rating']
+    #add review
+        Review.objects.create(
+            user=request.user,
+            product=product,
+            review=review,
+            rate=rate
+        )
+        #get all reviews for this products
+        review =Review.objects.filter(product=product)
+        return redirect(f'/products/{slug}')
+    except Exception as e:
+        logger.error(f'error gett error : {e}')
+        return redirect(f'/products/{slug}')
+    #logger
